@@ -1,6 +1,8 @@
 import auth from "./auth.mjs";
+import health from "./health.mjs";
 
-export default {
+export const router = {
   authRouter: auth,
+  health: health,
 };
 
