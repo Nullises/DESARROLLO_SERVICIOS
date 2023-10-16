@@ -2,12 +2,12 @@ import bodyParser from "body-parser";
 import express from "express";
 import jwt from "jsonwebtoken";
 import { autenticacionMiddleware } from "./authentication_middleware/auth.mjs";
-
+import { errorHandler } from "./error_handling/errorHandler.mjs";
 const app = express();
 app.use(bodyParser.json());
 const llaveSecreta = "miClaveSecreta";
 
-app.post("/login", (request, response) => {
+app.post("/login", (request, response, next) => {
   const usuario = request.body.usuario;
   const contrasena = request.body.contrasena;
 
@@ -15,7 +15,7 @@ app.post("/login", (request, response) => {
     const token = jwt.sign({ usuario }, llaveSecreta);
     response.json({ token });
   } else {
-    response.status(401).send("Credenciales inválidas");
+    errorHandler.forbidden(response, next);
   }
 });
 
